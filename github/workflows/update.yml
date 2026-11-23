@@ -1,0 +1,18 @@
+name: Atualizar Asphalt Hub
+on:
+  schedule: [{cron: "*/30 * * * *"}]   # a cada 30 min, sem ninguém acessando o site
+  workflow_dispatch:                    # botão "Run workflow" para rodar na hora
+permissions: {contents: write}
+concurrency: update-hub
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: 20}
+      - run: node scripts/update.mjs
+        env: {YT_CHANNEL_ID: "${{ vars.YT_CHANNEL_ID }}"}
+      - run: |
+          git config user.name "asphalt-hub-bot"; git config user.email "bot@users.noreply.github.com"
+          git add data.json status.json; git diff --cached --quiet || (git commit -m "chore: atualização automática" && git push)
