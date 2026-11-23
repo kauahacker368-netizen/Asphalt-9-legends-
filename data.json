@@ -1,0 +1,89 @@
+{
+ "news": [
+  {
+   "t": "Audi entra como fabricante permanente em Asphalt Legends (Update 51)",
+   "d": "2026-05-26",
+   "c": "Atualizações",
+   "e": "🏎️",
+   "s": "Gameloft Newsroom",
+   "u": "https://www.en.gameloft.com/newsroom/audi-joins-asphalt-legends-as-a-permanent-manufacturer",
+   "x": "Update 51 disponível, com a Audi como fabricante permanente. A Audi Season foi de 27/05 a 23/06."
+  },
+  {
+   "t": "Gameloft e Porsche revelam supercarro criado pela comunidade",
+   "d": "2026-03-31",
+   "c": "Carros",
+   "e": "🔥",
+   "s": "Gameloft Newsroom",
+   "u": "https://www.gameloft.com/newsroom/gameloft-porsche-community-created-supercar-asphalt-legends",
+   "x": "Fim da temporada “Porsche of Legends”: o Porsche 918 Spyder Asphalt Edition, projetado pela comunidade após 9 meses de campanha."
+  },
+  {
+   "t": "Gameloft e IMSA: Endurance Mode Spotlight chega em 15/09/2026",
+   "d": "2026-09-15",
+   "c": "Eventos",
+   "e": "🏁",
+   "s": "Gameloft Newsroom (chamada na página)",
+   "u": "https://www.gameloft.com/newsroom/asphalt-legends-unite-launch",
+   "x": "Parceria para trazer corridas de endurance ao jogo. Detalhes completos no comunicado original."
+  }
+ ],
+ "events": [
+  {
+   "n": "Movember × Lamborghini",
+   "a": "2026-11-02T00:00:00-03:00",
+   "b": "2026-11-30T23:59:59-03:00",
+   "car": "Lamborghini Huracán STO (pintura grátis) e Revuelto (design beneficente)",
+   "r": "Parte da renda apoia a Movember Foundation. Horários exatos não divulgados: usamos 00:00 e 23:59 de Brasília.",
+   "s": "XboxDynasty / FinalWeapon (imprensa; confirmação oficial pendente)",
+   "u": "https://www.xboxdynasty.de/news/asphalt-legends/movember-bringt-kostenlose-lamborghini-lackierung/"
+  },
+  {
+   "n": "Porsche 918 Spyder",
+   "a": "2026-11-03T00:00:00-03:00",
+   "b": "2026-11-16T23:59:59-03:00",
+   "car": "Porsche 918 Spyder",
+   "r": "Evento do carro na atualização Brawl of the Deep. Horários exatos não divulgados.",
+   "s": "FinalWeapon (notas da atualização; confirmação oficial pendente)",
+   "u": "https://finalweapon.net/2026/10/13/asphalt-legends-brawl-of-the-deep-update-tekken-8-collaboration/"
+  },
+  {
+   "n": "Starway Sarthe",
+   "a": "2026-10-14T00:00:00-03:00",
+   "b": "2026-11-11T23:59:59-03:00",
+   "car": "Dodge Viper ACR, Ferrari Monza SP1, Lamborghini Huracán Super Trofeo EVO, Lamborghini Countach 25th",
+   "r": "Temporada Starway da atualização Brawl of the Deep.",
+   "s": "FinalWeapon (notas da atualização; confirmação oficial pendente)",
+   "u": "https://finalweapon.net/2026/10/13/asphalt-legends-brawl-of-the-deep-update-tekken-8-collaboration/"
+  },
+  {
+   "n": "Crossover TEKKEN 8",
+   "a": "2026-10-14T00:00:00-03:00",
+   "b": "2026-11-10T23:59:59-03:00",
+   "car": "Carros e decals temáticos, modo de luta",
+   "r": "Modo melhor-de-três, decals e músicas.",
+   "s": "racinggames.gg (imprensa; confirmação oficial pendente)",
+   "u": "https://racinggames.gg/article/asphalt-legends-tekken-8-crossover-brings-fighting-game-mode-and-exclusive-cars"
+  },
+  {
+   "n": "Audi Season",
+   "a": "2026-05-27T00:00:00-03:00",
+   "b": "2026-06-23T23:59:59-03:00",
+   "car": "Audi, nova fabricante permanente",
+   "r": "Temporada dedicada à chegada da Audi (Update 51).",
+   "s": "Gameloft Newsroom (oficial)",
+   "u": "https://www.en.gameloft.com/newsroom/audi-joins-asphalt-legends-as-a-permanent-manufacturer"
+  }
+ ],
+ "codes": [],
+ "sources": [
+  [
+   "Gameloft Newsroom",
+   "https://www.gameloft.com/newsroom"
+  ],
+  [
+   "Site oficial Asphalt Legends",
+   "https://www.gameloft.com/asphalt-legends"
+  ]
+ ]
+}

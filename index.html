@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ASPHALT HUB — Portal independente de Asphalt Legends</title>
+<style>
+:root{--bg:#07070a;--card:#14141b;--line:#2d2d3a;--tx:#f2f1f7;--mut:#a3a3b5;--red:#ff2d3d;--org:#ff8a1f;--neon:#19f0ff}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--tx);font:16px/1.5 system-ui,Segoe UI,Roboto,sans-serif;overflow-x:hidden;min-height:100vh}
+a{color:var(--neon)}
+/* cenário 3D de fundo: estrada em perspectiva */
+.world{position:fixed;inset:0;z-index:-1;overflow:hidden;perspective:500px;background:radial-gradient(900px 420px at 50% 30%,#3a0c16 0,#12060c 55%,#07070a 100%)}
+.sun{position:absolute;left:50%;top:14%;width:340px;height:340px;margin-left:-170px;border-radius:50%;background:linear-gradient(#ffb02e,#ff2d3d 60%,#a0007a);filter:blur(2px);box-shadow:0 0 120px #ff2d3d99;-webkit-mask:repeating-linear-gradient(#000 0 14px,transparent 14px 20px);mask:repeating-linear-gradient(#000 0 14px,transparent 14px 20px);opacity:.55}
+.floor{position:absolute;left:-50%;width:200%;top:46%;height:120%;transform-origin:top;transform:rotateX(68deg);background:
+linear-gradient(90deg,#19f0ff55 1px,transparent 1px) 0 0/80px 80px,
+linear-gradient(#ff2d3d66 1px,transparent 1px) 0 0/80px 80px;animation:run 1.2s linear infinite;-webkit-mask:linear-gradient(transparent,#000 40%);mask:linear-gradient(transparent,#000 40%)}
+@keyframes run{to{background-position:0 0,0 80px}}
+.streak{position:absolute;height:2px;width:160px;background:linear-gradient(90deg,transparent,var(--neon));opacity:0;animation:str 2.4s linear infinite}
+@keyframes str{0%{transform:translateX(120vw);opacity:0}15%{opacity:.9}100%{transform:translateX(-30vw);opacity:0}}
+header{position:sticky;top:0;z-index:9;padding:10px 12px;transform:none}
+.bar{max-width:1100px;margin:auto;padding:10px 16px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;background:#12121bcc;backdrop-filter:blur(14px);border:1px solid #ffffff1a;border-radius:18px;box-shadow:0 10px 40px #000a,0 0 0 1px #ff2d3d22 inset}
+.logo{display:flex;align-items:center;gap:10px;font-weight:900;letter-spacing:3px;font-size:20px;font-style:italic;white-space:nowrap}
+.logo b{color:var(--red);text-shadow:0 0 14px var(--red),0 0 32px var(--org)}
+.emb{display:grid;place-items:center;width:38px;height:38px;font-style:italic;font-size:20px;color:#fff;background:linear-gradient(135deg,var(--red),var(--org));clip-path:polygon(25% 0,100% 0,75% 100%,0 100%);box-shadow:0 0 20px var(--red);animation:pul 2.5s ease-in-out infinite}
+@keyframes pul{50%{filter:brightness(1.35) drop-shadow(0 0 10px var(--org))}}
+nav{position:relative;display:flex;gap:2px;margin:0 auto;padding:5px;background:#0a0a10;border:1px solid #ffffff14;border-radius:14px;box-shadow:inset 0 2px 10px #000}
+nav u{position:absolute;top:5px;bottom:5px;left:0;width:0;border-radius:10px;background:linear-gradient(90deg,var(--red),var(--org));box-shadow:0 0 22px #ff2d3d99,0 0 0 1px #ffffff33 inset;transition:left .35s cubic-bezier(.3,1.4,.5,1),width .35s}
+nav button{position:relative;z-index:1;display:flex;align-items:center;gap:7px;background:none;border:0;color:var(--mut);padding:9px 16px;border-radius:10px;cursor:pointer;font:800 12.5px inherit;text-transform:uppercase;letter-spacing:1.5px;transition:color .2s}
+nav button em{font-style:normal;font-size:16px;filter:grayscale(1) brightness(1.4);transition:.2s}
+nav button:hover{color:#fff}
+nav button.on{color:#fff}nav button.on em{filter:none;transform:scale(1.15)}
+.live{display:flex;align-items:center;gap:8px;padding:6px 12px;border:1px solid #ffffff14;border-radius:12px;background:#0a0a10}
+.live i{width:8px;height:8px;border-radius:50%;background:#3dff8b;box-shadow:0 0 10px #3dff8b;animation:bl 1.4s infinite}
+@keyframes bl{50%{opacity:.25}}
+.live small{display:block;font-size:9px;letter-spacing:2px;color:var(--mut);line-height:1}
+.live b{font:800 15px ui-monospace,monospace;color:var(--neon)}
+@media(max-width:760px){
+.bar{justify-content:space-between;gap:8px;backdrop-filter:none;-webkit-backdrop-filter:none;background:#12121bf2}
+.hero .tag{font-size:9.5px;letter-spacing:.8px;white-space:nowrap}
+.hero{padding:30px 20px}
+nav{position:fixed;left:10px;right:10px;bottom:10px;margin:0;z-index:20;justify-content:space-between;padding:6px;border-radius:20px;background:#12121bee;backdrop-filter:blur(16px);box-shadow:0 12px 40px #000d,0 0 30px #ff2d3d33}
+nav u{top:6px;bottom:6px}
+nav button{flex:1;flex-direction:column;gap:2px;padding:7px 2px;font-size:10px;letter-spacing:.5px}
+nav button em{font-size:20px}
+main{padding-bottom:110px}}
+main{max-width:1100px;margin:auto;padding:20px 16px 70px}
+section{display:none;animation:in .5s}section.on{display:block}
+@keyframes in{from{opacity:0;transform:translateY(16px) rotateX(8deg)}}
+h1{font-size:clamp(30px,6vw,56px);line-height:1.05;font-style:italic;font-weight:900;text-transform:uppercase;
+background:linear-gradient(180deg,#fff,#ffb02e 55%,#ff2d3d);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 4px 0 #7a0c18) drop-shadow(0 10px 22px #ff2d3d88)}
+h2{margin:34px 0 14px;font-size:20px;text-transform:uppercase;letter-spacing:3px;font-style:italic;display:flex;align-items:center;gap:10px}
+h2:before{content:"";width:34px;height:12px;background:linear-gradient(90deg,var(--red),var(--org));transform:skewX(-30deg);box-shadow:0 0 14px var(--red)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:20px;perspective:1100px}
+.card{position:relative;background:linear-gradient(160deg,#1c1c27,#101016);border:1px solid #ffffff18;border-radius:18px;overflow:hidden;transform-style:preserve-3d;transition:transform .15s ease-out,box-shadow .3s,border-color .3s;box-shadow:0 14px 34px #000a;will-change:transform}
+.card:hover{border-color:var(--org);box-shadow:0 24px 60px #ff2d3d44,0 0 0 1px #ff8a1f66}
+.card:after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at var(--gx,50%) var(--gy,0%),#ffffff2e,transparent 55%);opacity:0;transition:.3s}
+.card:hover:after{opacity:1}
+.art{position:relative;height:130px;display:flex;align-items:flex-end;padding:12px;font-size:52px;overflow:hidden}
+.art:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(115deg,transparent 0 18px,#ffffff10 18px 24px)}
+.art span{position:relative;transform:translateZ(60px);filter:drop-shadow(0 12px 12px #000c);animation:fl 3s ease-in-out infinite}
+@keyframes fl{50%{transform:translateZ(60px) translateY(-6px)}}
+.body{padding:16px;transform:translateZ(24px)}.body h3{font-size:18px;margin:8px 0;line-height:1.25}
+.tag{display:inline-block;font:800 11px inherit;text-transform:uppercase;letter-spacing:1.5px;padding:3px 10px;border-radius:6px;border:1px solid var(--org);color:var(--org);transform:skewX(-10deg)}
+.mut{color:var(--mut);font-size:13px}
+.st-on{color:#3dff8b;border-color:#3dff8b;box-shadow:0 0 12px #3dff8b66}.st-soon{color:var(--neon);border-color:var(--neon)}.st-off{color:var(--mut);border-color:var(--mut)}
+.hero{position:relative;border-radius:24px;padding:40px 28px;border:1px solid #ffffff1c;background:linear-gradient(120deg,#ff2d3d22,#12121bcc 55%,#19f0ff1f);backdrop-filter:blur(8px);transform:perspective(1200px) rotateX(3deg);box-shadow:0 30px 80px #000c,0 0 60px #ff2d3d33;overflow:hidden}
+.hero:before{content:"";position:absolute;inset:-40% -10%;background:conic-gradient(from 0deg,transparent,#ff8a1f33,transparent 30%);animation:sp 9s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.hero>*{position:relative}
+.hero p{color:#cfcfdd;max-width:620px;margin-top:14px}
+.hero .tag{margin-bottom:14px}
+.cd{font:800 22px ui-monospace,monospace;color:var(--neon);text-shadow:0 0 12px #19f0ffaa;margin:8px 0}
+.tools{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
+input{flex:1;min-width:200px;background:#12121b;border:1px solid var(--line);color:var(--tx);padding:12px 16px;border-radius:12px;font:inherit;transition:.2s}
+input:focus{outline:0;border-color:var(--neon);box-shadow:0 0 20px #19f0ff44}
+.chip{background:#14141b;border:1px solid var(--line);color:var(--mut);padding:9px 16px;border-radius:10px;cursor:pointer;font:700 13px inherit;transition:.2s;transform:skewX(-8deg)}
+.chip:hover{color:#fff;border-color:var(--org)}
+.chip.on{color:#fff;border-color:var(--red);background:linear-gradient(90deg,#ff2d3d55,#ff8a1f44);box-shadow:0 0 18px #ff2d3d66}
+.empty{padding:26px;border:1px dashed #ff8a1f77;border-radius:16px;color:var(--mut);background:#14141b99}
+.car{display:flex;gap:18px;overflow:auto;scroll-snap-type:x mandatory;padding:10px 4px 24px;perspective:1100px}.car .card{min-width:min(86%,400px);scroll-snap-align:start}
+footer{border-top:1px solid var(--line);padding:22px 16px;text-align:center;color:var(--mut);font-size:13px;background:#07070acc}
+#sync{display:inline-flex;flex-wrap:wrap;gap:6px 12px;align-items:center;justify-content:center;margin-top:8px;font-size:12px}#sync i{width:8px;height:8px;border-radius:50%;background:var(--mut);display:inline-block;margin-right:5px}#sync.ok i{background:#3ddc84;box-shadow:0 0 8px #3ddc84}#sync.err i{background:var(--red);box-shadow:0 0 8px var(--red)}#sync button{font:inherit;color:var(--tx);background:none;border:1px solid var(--line);border-radius:999px;padding:2px 10px;cursor:pointer}
+@media(prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+</head>
+<body>
+<div class="world" aria-hidden="true"><div class="sun"></div><div class="floor"></div><i class="streak" style="top:30%;animation-delay:0s"></i><i class="streak" style="top:48%;animation-delay:.9s;width:240px"></i><i class="streak" style="top:64%;animation-delay:1.6s"></i></div>
+<header><div class="bar">
+<div class="logo"><i class="emb">A</i><span>ASPHALT<b>HUB</b></span></div>
+<nav id="nav"><u id="ind"></u>
+<button data-p="inicio" class="on"><em>🏠</em><span>Início</span></button>
+<button data-p="noticias"><em>📰</em><span>Notícias</span></button>
+<button data-p="codigos"><em>🎟️</em><span>Códigos</span></button>
+<button data-p="eventos"><em>🏁</em><span>Eventos</span></button>
+<button data-p="sobre"><em>ℹ️</em><span>Sobre</span></button></nav>
+<div class="live"><i></i><div><small>BRASÍLIA</small><b id="clk">--:--</b></div></div>
+</div></header>
+<main>
+<section id="inicio" class="on">
+<div class="hero"><span class="tag">Portal independente · não oficial</span><h1>Tudo sobre Asphalt Legends,<br>com fonte em cada informação.</h1><p>Notícias, eventos e códigos baseados em comunicados oficiais da Gameloft. Sem rumores, sem dados inventados.</p></div>
+<h2>Evento em destaque</h2><div id="hEv" class="grid"></div>
+<h2>Últimas notícias</h2><div class="car" id="car"></div>
+<h2>Códigos promocionais</h2><div id="hCod"></div>
+</section>
+<section id="noticias"><h2>Notícias</h2>
+<div class="tools"><input id="q" type="search" placeholder="Pesquisar notícias…"></div>
+<div class="tools" id="cats"></div><div class="grid" id="news"></div></section>
+<section id="codigos"><h2>Códigos</h2><div id="cods"></div></section>
+<section id="eventos"><h2>Eventos</h2><div class="tools" id="evf"></div><div class="grid" id="evs"></div></section>
+<section id="sobre"><h2>Sobre</h2>
+<p><b>ASPHALT HUB</b> é um projeto de fãs, <b>independente e não oficial</b>, sem vínculo com a Gameloft. Asphalt é marca da Gameloft.</p>
+<p style="margin-top:10px">Objetivo: reunir notícias, eventos e códigos do jogo, sempre com a fonte original linkada. Horários exibidos no fuso de Brasília (UTC-3).</p>
+<h2>Limitações</h2>
+<p>Este é um arquivo único, sem servidor. Os dados ficam no bloco <code>DATA</code> do próprio arquivo e <b>não se atualizam sozinhos</b>. Se você hospedar um arquivo <code>data.json</code> no mesmo formato e preencher <code>DATA_URL</code> no código, o site passa a carregá-lo ao abrir. Sem isso, nada é simulado.</p>
+<h2>Fontes</h2><ul id="src" style="margin-left:20px"></ul></section>
+</main>
+<footer>ASPHALT HUB · fã-site não oficial<br><span id="upd"></span><br><span id="sync"><span><i></i><b id="sst">Status…</b></span><span id="slast"></span><span id="snext"></span><button id="sbtn" type="button">Atualizar agora</button></span></footer>
+<script>
+const DATA_URL="data.json"; // gerado a cada 30 min pelo GitHub Actions (scripts/update.mjs)
+const STATUS_URL="status.json";
+let DATA={
+news:[
+{t:"Audi entra como fabricante permanente em Asphalt Legends (Update 51)",d:"2026-05-26",c:"Atualizações",e:"🏎️",s:"Gameloft Newsroom",u:"https://www.en.gameloft.com/newsroom/audi-joins-asphalt-legends-as-a-permanent-manufacturer",x:"Update 51 disponível, com a Audi como fabricante permanente. A Audi Season foi de 27/05 a 23/06."},
+{t:"Gameloft e Porsche revelam supercarro criado pela comunidade",d:"2026-03-31",c:"Carros",e:"🔥",s:"Gameloft Newsroom",u:"https://www.gameloft.com/newsroom/gameloft-porsche-community-created-supercar-asphalt-legends",x:"Fim da temporada “Porsche of Legends”: o Porsche 918 Spyder Asphalt Edition, projetado pela comunidade após 9 meses de campanha."},
+{t:"Gameloft e IMSA: Endurance Mode Spotlight chega em 15/09/2026",d:"2026-09-15",c:"Eventos",e:"🏁",s:"Gameloft Newsroom (chamada na página)",u:"https://www.gameloft.com/newsroom/asphalt-legends-unite-launch",x:"Parceria para trazer corridas de endurance ao jogo. Detalhes completos no comunicado original."}
+],
+events:[
+{n:"Movember × Lamborghini",a:"2026-11-02T00:00:00-03:00",b:"2026-11-30T23:59:59-03:00",car:"Lamborghini Huracán STO (pintura grátis) e Revuelto (design beneficente)",r:"Parte da renda apoia a Movember Foundation. Horários exatos não divulgados: usamos 00:00 e 23:59 de Brasília.",s:"XboxDynasty / FinalWeapon (imprensa; confirmação oficial pendente)",u:"https://www.xboxdynasty.de/news/asphalt-legends/movember-bringt-kostenlose-lamborghini-lackierung/"},
+{n:"Porsche 918 Spyder",a:"2026-11-03T00:00:00-03:00",b:"2026-11-16T23:59:59-03:00",car:"Porsche 918 Spyder",r:"Evento do carro na atualização Brawl of the Deep. Horários exatos não divulgados.",s:"FinalWeapon (notas da atualização; confirmação oficial pendente)",u:"https://finalweapon.net/2026/10/13/asphalt-legends-brawl-of-the-deep-update-tekken-8-collaboration/"},
+{n:"Starway Sarthe",a:"2026-10-14T00:00:00-03:00",b:"2026-11-11T23:59:59-03:00",car:"Dodge Viper ACR, Ferrari Monza SP1, Lamborghini Huracán Super Trofeo EVO, Lamborghini Countach 25th",r:"Temporada Starway da atualização Brawl of the Deep.",s:"FinalWeapon (notas da atualização; confirmação oficial pendente)",u:"https://finalweapon.net/2026/10/13/asphalt-legends-brawl-of-the-deep-update-tekken-8-collaboration/"},
+{n:"Crossover TEKKEN 8",a:"2026-10-14T00:00:00-03:00",b:"2026-11-10T23:59:59-03:00",car:"Carros e decals temáticos, modo de luta",r:"Modo melhor-de-três, decals e músicas.",s:"racinggames.gg (imprensa; confirmação oficial pendente)",u:"https://racinggames.gg/article/asphalt-legends-tekken-8-crossover-brings-fighting-game-mode-and-exclusive-cars"},
+{n:"Audi Season",a:"2026-05-27T00:00:00-03:00",b:"2026-06-23T23:59:59-03:00",car:"Audi, nova fabricante permanente",r:"Temporada dedicada à chegada da Audi (Update 51).",s:"Gameloft Newsroom (oficial)",u:"https://www.en.gameloft.com/newsroom/audi-joins-asphalt-legends-as-a-permanent-manufacturer"}
+],
+codes:[],
+sources:[["Gameloft Newsroom","https://www.gameloft.com/newsroom"],["Site oficial Asphalt Legends","https://www.gameloft.com/asphalt-legends"]]
+};
+const $=s=>document.querySelector(s),fmt=(d,o)=>new Date(d).toLocaleString("pt-BR",{timeZone:"America/Sao_Paulo",...o});
+const day=d=>fmt(d+(d.length==10?"T12:00:00-03:00":""),{day:"2-digit",month:"long",year:"numeric"});
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const grad=i=>`linear-gradient(135deg,hsl(${[355,25,185][i%3]} 80% 20%),#16161c)`;
+const status=e=>{const n=Date.now();return n<+new Date(e.a)?"soon":n>+new Date(e.b)?"off":"on"};
+const lab={on:"Ativo",soon:"Em breve",off:"Encerrado"};
+function newsCard(n,i){return `<div class="card"><div class="art" style="background:${grad(i)}"><span>${n.e}</span></div><div class="body"><span class="tag">${esc(n.c)}</span><h3>${esc(n.t)}</h3><p class="mut">${esc(n.x)}</p><p class="mut" style="margin-top:8px">${day(n.d)} · Fonte: <a href="${esc(n.u)}" target="_blank" rel="noopener">${esc(n.s)}</a></p></div></div>`}
+function evCard(e,i){const s=status(e);return `<div class="card"><div class="art" style="background:${grad(i)}"><span>🏁</span></div><div class="body"><span class="tag st-${s}">${lab[s]}</span><h3>${esc(e.n)}</h3><p class="mut">🚗 ${esc(e.car)}</p><p class="mut">${fmt(e.a,{day:"2-digit",month:"2-digit"})} → ${fmt(e.b,{day:"2-digit",month:"2-digit",year:"numeric"})}</p><p class="cd" data-s="${s}" data-a="${e.a}" data-b="${e.b}"></p><p class="mut">${esc(e.r)}</p><p class="mut">Fonte: <a href="${esc(e.u)}" target="_blank" rel="noopener">${esc(e.s)}</a></p></div></div>`}
+const codesHtml=()=>DATA.codes.length?`<div class="grid">${DATA.codes.map(c=>`<div class="card"><div class="body"><span class="tag ${c.exp?'st-off':'st-on'}">${c.exp?"Expirado":"Disponível"}</span><h3>${esc(c.code)}</h3><p class="mut">${esc(c.reward)}</p><p class="mut">Publicado: ${day(c.d)}${c.valid?" · Válido até "+day(c.valid):""} · <a href="${esc(c.u)}" target="_blank" rel="noopener">Fonte</a></p><button class="chip" onclick="navigator.clipboard.writeText('${esc(c.code)}').then(()=>this.textContent='Copiado!')">Copiar código</button></div></div>`).join("")}</div>`:`<div class="empty">Nenhum código promocional oficial confirmado no momento. Não exibimos códigos de fontes não oficiais.</div>`;
+let cat="Todas",evf="todos";
+function renderNews(){const q=$("#q").value.toLowerCase(),cs=["Todas",...new Set(DATA.news.map(n=>n.c))];
+$("#cats").innerHTML=cs.map(c=>`<button class="chip ${c==cat?'on':''}" data-c="${esc(c)}">${esc(c)}</button>`).join("");
+const l=DATA.news.filter(n=>(cat=="Todas"||n.c==cat)&&(n.t+n.x).toLowerCase().includes(q)).sort((a,b)=>b.d.localeCompare(a.d));
+$("#news").innerHTML=l.length?l.map(newsCard).join(""):`<div class="empty">Sem novidades confirmadas para esse filtro.</div>`}
+function renderEv(){$("#evf").innerHTML=["todos","on","soon","off"].map(k=>`<button class="chip ${k==evf?'on':''}" data-f="${k}">${k=="todos"?"Todos":lab[k]}</button>`).join("");
+const l=DATA.events.filter(e=>evf=="todos"||status(e)==evf);$("#evs").innerHTML=l.length?l.map(evCard).join(""):`<div class="empty">Nenhum evento confirmado nessa categoria.</div>`}
+function render(){const ev=DATA.events.filter(e=>status(e)=="on");
+$("#hEv").innerHTML=ev.length?ev.map(evCard).join(""):`<div class="empty">Sem evento ativo confirmado no momento.</div>`;
+$("#car").innerHTML=DATA.news.slice().sort((a,b)=>b.d.localeCompare(a.d)).map(newsCard).join("");
+$("#hCod").innerHTML=$("#cods").innerHTML=codesHtml();
+$("#src").innerHTML=DATA.sources.map(s=>`<li><a href="${s[1]}" target="_blank" rel="noopener">${esc(s[0])}</a></li>`).join("")+"<li>Eventos marcados “confirmação pendente” vêm de imprensa especializada.</li>";
+renderNews();renderEv();tick()}
+function tick(){document.querySelectorAll(".cd").forEach(el=>{const s=el.dataset.s;if(s=="off"){el.textContent="Encerrado";return}
+let ms=+new Date(s=="soon"?el.dataset.a:el.dataset.b)-Date.now(),d=Math.floor(ms/864e5),h=Math.floor(ms/36e5)%24,m=Math.floor(ms/6e4)%60,x=Math.floor(ms/1e3)%60;
+el.textContent=(s=="soon"?"Começa em ":"Termina em ")+`${d}d ${h}h ${m}m ${x}s`})}
+setInterval(tick,1000);
+function ind(){const b=document.querySelector("nav button.on"),u=$("#ind");u.style.left=b.offsetLeft+"px";u.style.width=b.offsetWidth+"px"}
+$("#nav").onclick=e=>{const b=e.target.closest("button");if(!b)return;const p=b.dataset.p;document.querySelectorAll("section,nav button").forEach(x=>x.classList.remove("on"));$("#"+p).classList.add("on");b.classList.add("on");ind();scrollTo({top:0,behavior:"smooth"})};
+const clk=()=>$("#clk").textContent=new Date().toLocaleTimeString("pt-BR",{timeZone:"America/Sao_Paulo",hour:"2-digit",minute:"2-digit",second:"2-digit"});
+clk();setInterval(clk,1000);addEventListener("resize",ind);addEventListener("load",ind);setTimeout(ind,50);
+$("#cats").onclick=e=>{if(e.target.dataset.c){cat=e.target.dataset.c;renderNews()}};
+$("#evf").onclick=e=>{if(e.target.dataset.f){evf=e.target.dataset.f;renderEv();tick()}};
+$("#q").oninput=renderNews;
+const HHMM=()=>new Date().toLocaleTimeString("pt-BR",{timeZone:"America/Sao_Paulo",hour:"2-digit",minute:"2-digit"});
+async function refresh(){
+ const hm=d=>d?fmt(d,{hour:"2-digit",minute:"2-digit",day:"2-digit",month:"2-digit"}):"—",sy=$("#sync");
+ try{const g=u=>fetch(u+"?t="+Date.now(),{cache:"no-store"}).then(r=>{if(!r.ok)throw 0;return r.json()});
+  DATA=await g(DATA_URL);render();let s={};try{s=await g(STATUS_URL)}catch(e){}
+  const bad=s.status=="error"||s.status=="partial";sy.className=bad?"err":"ok";
+  $("#sst").textContent=s.status=="ok"?"Operacional":s.status=="partial"?"Falha parcial na fonte":s.status=="error"?"Falha na atualização (dados anteriores mantidos)":"Aguardando 1ª verificação";
+  $("#slast").textContent="Última verificação: "+hm(s.lastCheck);$("#snext").textContent="Próxima: "+hm(s.nextCheck);
+  $("#upd").textContent=(s.errors&&s.errors.length&&bad)?s.errors.slice(0,2).join(" · "):""}
+ catch(e){sy.className="err";$("#sst").textContent="Sem acesso a data.json (exibindo dados embutidos)";$("#slast").textContent="";$("#snext").textContent=""}}
+$("#sbtn").onclick=async function(){this.textContent="Lendo…";await refresh();this.textContent="Atualizar agora"};
+render();refresh();
+setInterval(refresh,30*60*1000);
+setInterval(render,60*1000); // reavalia Ativo/Encerrado a cada minuto
+/* inclinação 3D dos cards seguindo o mouse/toque */
+document.addEventListener("pointermove",e=>{const c=e.target.closest&&e.target.closest(".card");document.querySelectorAll(".card.t").forEach(x=>{if(x!==c){x.classList.remove("t");x.style.transform=""}});
+if(!c)return;const r=c.getBoundingClientRect(),px=(e.clientX-r.left)/r.width,py=(e.clientY-r.top)/r.height;c.classList.add("t");
+c.style.transform=`rotateY(${(px-.5)*16}deg) rotateX(${(.5-py)*16}deg) translateZ(14px)`;c.style.setProperty("--gx",px*100+"%");c.style.setProperty("--gy",py*100+"%")});
+document.addEventListener("pointerleave",()=>document.querySelectorAll(".card.t").forEach(x=>{x.classList.remove("t");x.style.transform=""}),true);
+</script>
+</body>
+</html>
